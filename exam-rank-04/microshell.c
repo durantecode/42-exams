@@ -108,18 +108,18 @@ void    command(int argc, char **argv, char **envp, int prev_cmd, int *fd_prev)
                 write(2, "\n", 1);
                 exit (1);
             }
-            else
+		}
+        else
+        {
+            if (waitpid(pid, &exit_status, 0) < 0)
             {
-                if (waitpid(pid, &exit_status, 0) < 0)
-                {
-                    write(2, ERR_FATAL, ft_strlen(ERR_FATAL));
-                    exit (1);
-                }
-                if (prev_cmd)
-                    close(fd_prev[READ_END]);
-                if (next_cmd)
-                    close(fd_next[WRITE_END]);
+                write(2, ERR_FATAL, ft_strlen(ERR_FATAL));
+                exit (1);
             }
+            if (prev_cmd)
+        		close(fd_prev[READ_END]);
+            if (next_cmd)
+                close(fd_next[WRITE_END]);
         }
     }
     i = 0;
