@@ -1,40 +1,50 @@
 #include "Warlock.hpp"
 
-Warlock::Warlock(std::string const &name, std::string const &title)
+Warlock::Warlock(const std::string &name, const std::string &title)
 {
-    this->name = name;
-    this->title = title;
-    std::cout << this->name << ": This looks like another boring day.\n";
+	this->m_name = name;
+	this->m_title = title;
+	std::cout << this->m_name << ": This looks like another boring day." << std::endl;
 }
 
 Warlock::~Warlock()
 {
-    std::cout << this->name << ": My job here is done!\n";
+	std::cout << this->m_name << ": My job here is done!" << std::endl;
 }
 
-std::string const &Warlock::getName() const { return (this->name);}
-std::string const &Warlock::getTitle() const { return (this->title);}
-
-void Warlock::setTitle(std::string const &title) { this->title = title;}
-
-void Warlock::introduce() const { std::cout << this->name << ": I am " << this->name << ", " << this->title << "!\n";}
-
-void Warlock::learnSpell(ASpell *aspell_ptr)
+const std::string &Warlock::getName() const
 {
-    book.learnSpell(aspell_ptr);
+	return (this->m_name);
 }
 
-void Warlock::forgetSpell(std::string name)
+const std::string &Warlock::getTitle() const
 {
-    book.forgetSpell(name);
+	return (this->m_title);
 }
 
-void Warlock::launchSpell(std::string name, ATarget const &atarget_ref)
+void Warlock::setTitle(const std::string &title)
 {
-    ATarget const *test = 0;
-    if (test == &atarget_ref)
-        return;
-    ASpell *temp = book.createSpell(name);
-    if (temp)
-        temp->launch(atarget_ref);
+	this->m_title = title;
+}
+	
+void Warlock::introduce() const
+{
+	std::cout << this->m_name << ": I am " << this->m_name << ", " << this->m_title << "!" << std::endl;
+}
+
+void Warlock::learnSpell(ASpell *spell)
+{
+	this->m_spellBook.learnSpell(spell);
+}
+
+void Warlock::forgetSpell(const std::string &spellName)
+{
+	this->m_spellBook.forgetSpell(spellName);
+}
+
+void Warlock::launchSpell(const std::string &spellName, const ATarget &target)
+{
+	ASpell *spell = this->m_spellBook.createSpell(spellName);
+	if (spell)
+		spell->launch(target);
 }

@@ -2,28 +2,37 @@
 
 ASpell::ASpell() {}
 
-ASpell::ASpell(std::string const &name, std::string const &effects)
-{
-    this->name = name;
-    this->effects = effects;
-}
-
-ASpell::ASpell(ASpell const &other) { *this = other;}
-
-ASpell &ASpell::operator=(ASpell const &other)
-{
-    this->name = other.name;
-    this->effects = other.effects;
-    return (*this);
-}
-
 ASpell::~ASpell() {}
 
-std::string const &ASpell::getName() const { return (this->name);}
-
-std::string const &ASpell::getEffects() const { return (this->effects);}
-
-void ASpell::launch(ATarget const &atarget_ref) const
+ASpell::ASpell(const std::string &name, const std::string &effects)
 {
-    atarget_ref.getHitBySpell((*this));
+	this->m_name = name;
+	this->m_effects = effects;
+}
+
+ASpell::ASpell(ASpell const &toCopy)
+{
+	*this = toCopy;
+}
+
+ASpell &ASpell::operator=(ASpell const &toCopy)
+{
+	this->m_name = toCopy.getName();
+	this->m_effects = toCopy.getEffects();
+	return *this;
+}
+
+const std::string &ASpell::getName() const
+{
+	return (this->m_name);
+}
+
+const std::string &ASpell::getEffects() const
+{
+	return (this->m_effects);
+}
+
+void ASpell::launch(const ATarget &target) const
+{
+	target.getHitBySpell(*this);
 }

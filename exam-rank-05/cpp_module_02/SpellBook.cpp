@@ -4,34 +4,56 @@ SpellBook::SpellBook() {}
 
 SpellBook::~SpellBook()
 {
-    std::map<std::string, ASpell *>::iterator it_begin = this->arr_spell.begin();
-    std::map<std::string, ASpell *>::iterator it_end = this->arr_spell.end();
-    while (it_begin != it_end)
-    {
-        delete it_begin->second;
-        ++it_begin;
-    }
-    this->arr_spell.clear();
+	std::vector<ASpell*>::iterator it = this->m_book.begin();
+	std::vector<ASpell*>::iterator ite = this->m_book.end();
+	while (it != ite)
+	{
+		delete *it;
+		it++;
+	}
+	this->m_book.clear();
 }
 
-void SpellBook::learnSpell(ASpell* spell_ptr)
+void SpellBook::learnSpell(ASpell *spell)
 {
-    if (spell_ptr)
-        arr_spell.insert(std::pair<std::string, ASpell *>(spell_ptr->getName(), spell_ptr->clone()));
+	if (spell)
+	{
+		std::vector<ASpell*>::iterator it = this->m_book.begin();
+		std::vector<ASpell*>::iterator ite = this->m_book.end();
+		while (it != ite)
+		{
+			if ((*it)->getName() == spell->getName())
+				return;
+			it++;
+		}
+		this->m_book.push_back(spell->clone());
+	}
 }
 
-void SpellBook::forgetSpell(std::string const &spell_name)
+void SpellBook::forgetSpell(const std::string &spellName)
 {
-    std::map<std::string, ASpell *>::iterator it = arr_spell.find(spell_name);
-	if (it != arr_spell.end())
-		delete it->second;
-    arr_spell.erase(spell_name);
+	std::vector<ASpell*>::iterator it = this->m_book.begin();
+	std::vector<ASpell*>::iterator ite = this->m_book.end();
+	while (it != ite)
+	{
+		if ((*it)->getName() == spellName)
+		{
+			delete *it;
+			it = this->m_book.erase(it);
+		}
+		it++;
+	}
 }
 
-ASpell* SpellBook::createSpell(std::string const &spell_name)
+ASpell *SpellBook::createSpell(const std::string &spellName)
 {
-    std::map<std::string, ASpell *>::iterator it = arr_spell.find(spell_name);
-    if (it != arr_spell.end())
-        return arr_spell[spell_name];
-    return NULL;
+	std::vector<ASpell*>::iterator it = this->m_book.begin();
+	std::vector<ASpell*>::iterator ite = this->m_book.end();
+	while (it != ite)
+	{
+		if ((*it)->getName() == spellName)
+			return (*it);
+		it++;
+	}
+	return (nullptr);
 }
